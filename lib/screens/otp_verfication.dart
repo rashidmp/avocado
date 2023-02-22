@@ -1,3 +1,4 @@
+import 'package:avocado/providers/auth_provider.dart';
 import 'package:avocado/screens/profile_page.dart';
 import 'package:avocado/utils/colors.dart';
 import 'package:avocado/widgets/custome_button.dart';
@@ -5,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/utils.dart';
+import 'home_screen.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String verificationId;
+  const OtpScreen({super.key, required this.verificationId});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -84,11 +88,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     text: "Verify",
                     onPressed: () {
                       if (otpCode != null) {
-                        // verifyOtp(context, otpCode!);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()),
-                        );
+                        verifyOtp(context, otpCode!);
                       } else {
                         showSnackBar(context, "Enter 6-Digit code");
                       }
@@ -119,5 +119,21 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
+  }
+
+  void verifyOtp(BuildContext context, String userOtp) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.verifyOtp(
+        context: context,
+        verificationId: widget.verificationId,
+        userOtp: userOtp,
+        onSuccess: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+              (route) => false);
+        });
   }
 }
