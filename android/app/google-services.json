@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "103225055326",
+    "project_id": "avocado-flutter",
+    "storage_bucket": "avocado-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103225055326:android:3387f623100e381344fccf",
+        "android_client_info": {
+          "package_name": "com.example.avocado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103225055326-i9kkbakies5qi2ejctpjv4906jl5rad4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDABowx6_WRqHlMY8kooI1_ISvHvpuH_78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103225055326-i9kkbakies5qi2ejctpjv4906jl5rad4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,6 +38,9 @@ dependencies:
   rive_splash_screen: ^0.1.1
   country_picker: ^2.0.19
   pinput: ^2.2.21
+  firebase_core: ^2.7.0
+  firebase_auth: ^4.2.9
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
