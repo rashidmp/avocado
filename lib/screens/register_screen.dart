@@ -1,10 +1,10 @@
-import 'package:avocado/providers/auth_provider.dart';
-import 'package:avocado/screens/otp_verfication.dart';
 import 'package:avocado/utils/colors.dart';
-import 'package:avocado/widgets/custome_button.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
+import '../widgets/custome_button.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -31,6 +31,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    phoneController.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: phoneController.text.length,
+      ),
+    );
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -38,6 +43,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
               children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kPrimaryColor,
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.network(
+                      'https://api.dicebear.com/5.x/fun-emoji/png?seed=avocado'),
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   "Register",
@@ -58,14 +74,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  onChanged: (value) => setState(() {
-                    phoneController.text = value;
-                  }),
-                  cursorColor: kAccentColor,
+                  cursorColor: Colors.purple,
+                  controller: phoneController,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      phoneController.text = value;
+                    });
+                  },
                   decoration: InputDecoration(
                     hintText: "Enter phone number",
                     hintStyle: TextStyle(
@@ -87,19 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onTap: () {
                           showCountryPicker(
                               context: context,
-                              countryListTheme: CountryListThemeData(
-                                inputDecoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        const BorderSide(color: Colors.black12),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        const BorderSide(color: Colors.black12),
-                                  ),
-                                ),
+                              countryListTheme: const CountryListThemeData(
                                 bottomSheetHeight: 550,
                               ),
                               onSelect: (value) {
@@ -109,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               });
                         },
                         child: Text(
-                          '${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}',
+                          "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
                           style: const TextStyle(
                             fontSize: 18,
                             color: Colors.black,
@@ -118,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-                    suffixIcon: phoneController.text.length == 10
+                    suffixIcon: phoneController.text.length > 9
                         ? Container(
                             height: 30,
                             width: 30,
@@ -136,71 +143,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : null,
                   ),
                 ),
-
-                // TextFormField(
-                //   cursorColor: Colors.purple,
-                //   controller: phoneController,
-                //   style: const TextStyle(
-                //     fontSize: 18,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   onChanged: (value) {
-                //     setState(() {
-                //       phoneController.text = value;
-                //     });
-                //   },
-                //   decoration: InputDecoration(
-
-                //     prefixIcon: Container(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: InkWell(
-                //         onTap: () {
-                //           showCountryPicker(
-                //               context: context,
-                //               countryListTheme: const CountryListThemeData(
-                //                 bottomSheetHeight: 550,
-                //               ),
-                //               onSelect: (value) {
-                //                 setState(() {
-                //                   selectedCountry = value;
-                //                 });
-                //               });
-                //         },
-                //         child: Text(
-                //           "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
-                //           style: const TextStyle(
-                //             fontSize: 18,
-                //             color: Colors.black,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     suffixIcon: phoneController.text.length > 9
-                //         ? Container(
-                //             height: 30,
-                //             width: 30,
-                //             margin: const EdgeInsets.all(10.0),
-                //             decoration: const BoxDecoration(
-                //               shape: BoxShape.circle,
-                //               color: Colors.green,
-                //             ),
-                //             child: const Icon(
-                //               Icons.done,
-                //               color: Colors.white,
-                //               size: 20,
-                //             ),
-                //           )
-                //         : null,
-                //   ),
-                // ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: AvocadoButton(
-                    text: "Login",
-                    onPressed: () => sendOtp(),
-                  ),
+                      text: "Login", onPressed: () => sendPhoneNumber()),
                 ),
               ],
             ),
@@ -210,10 +157,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void sendOtp() {
+  void sendPhoneNumber() {
     final ap = Provider.of<AuthProvider>(context, listen: false);
-
     String phoneNumber = phoneController.text.trim();
-    ap.signInWithPhone(context, '+${selectedCountry.phoneCode}$phoneNumber');
+    ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");
   }
 }
