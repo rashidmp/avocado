@@ -31,7 +31,10 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              Image.asset('assets/2.png'),
+              Image.asset(
+                'assets/2.png',
+                height: 512,
+              ),
               const SizedBox(height: 64),
               Center(
                 child: AvocadoButton(

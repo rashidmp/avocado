@@ -131,7 +131,7 @@ class _OtpScreenState extends State<OtpScreen> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
+                builder: (context) => const ProfileScreen(),
               ),
               (route) => false);
         });
